@@ -7,29 +7,21 @@ console.log(calculate('multiply', 4, 2)); // 8
 console.log(calculate('divide', 4, 2)); // 2
 console.log(calculate('remainder', 5, 2)); // 1
 
-function calculate(type: string, num1: number, num2: number): number {
-  let result: number;
+type Command = 'add' | 'substract' | 'multiply' | 'divide' | 'remainder';
 
-  switch (type) {
-    case 'add': {
-      result = num1 + num2;
-    }
-    case 'substract': {
-      result = num1 - num2;
-    }
-    case 'multiply': {
-      result = num1 * num2;
-    }
-    case 'divide': {
-      result = num1 / num2;
-    }
-    case 'remainder': {
-      result = num1 % num2;
-    }
-
+function calculate(command: Command, a: number, b: number): number {
+  switch (command) {
+    case 'add':
+      return a + b;
+    case 'substract':
+      return a - b;
+    case 'multiply':
+      return a * b;
+    case 'divide':
+      return a / b;
+    case 'remainder':
+      return a % b;
     default:
-      result = 0;
+      throw Error('unknown command');
   }
-
-  return result;
 }
