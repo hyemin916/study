@@ -2,18 +2,12 @@
  * Let's make a game 🕹
  */
 
-type Position = {
-  x: number;
-  y: number;
-};
-type Direction = 'up' | 'down' | 'left' | 'right';
-
-let position: Position = {
+const position = {
   x: 0,
   y: 0,
 };
 
-function move(direction: Direction) {
+function move(direction: 'up' | 'down' | 'left' | 'right') {
   switch (direction) {
     case 'up': {
       position.y += 1;
@@ -32,7 +26,7 @@ function move(direction: Direction) {
       break;
     }
     default: {
-      throw Error('unknown direction');
+      throw Error(`unknown direction: ${direction}`);
     }
   }
 }
