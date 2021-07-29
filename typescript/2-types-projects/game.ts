@@ -1,4 +1,4 @@
-/**
+{/**
  * Let's make a game 🕹
  */
 
@@ -40,3 +40,4 @@ move('left');
 console.log(position); // { x: -1, y: 0}
 move('right');
 console.log(position); // { x: 0, y: 0}
+}

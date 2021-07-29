@@ -42,7 +42,7 @@
   };
 
   const obj2 = {
-    anmial: '🐏',
+    animal: '🐏',
   };
 
   function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {

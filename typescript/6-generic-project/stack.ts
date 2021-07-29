@@ -47,7 +47,7 @@ while (stack.size !== 0) {
   console.log(stack.pop());
 }
 
-const stack2 = new StackImpl<number>(5); //string 데이터 이용할 것이라고 정의
+const stack2 = new StackImpl<number>(5);
 stack2.push(123);
 stack2.push(456);
 stack2.push(789);
