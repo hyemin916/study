@@ -25,22 +25,8 @@ function statement(invoice, plays) {
   result += `총액: ${usd(totalAmount() / 100)}\n`;
   result += `적립 포인트: ${totalVolumeCredits()}점\n`;
 
-  function totalAmount() {
-    let result = 0;
-    for (let perf of invoice.performances) {
-      result += amountFor(perf);
-    }
-    return result;
-  }
-
-  function totalVolumeCredits() {
-    let result = 0;
-
-    for (let perf of invoice.performances) {
-      result += volumeCreditsFor(perf);
-    }
-
-    return result;
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
   }
 
   function usd(aNumber) {
@@ -49,16 +35,6 @@ function statement(invoice, plays) {
       currency: "USD",
       minimumFractionDigits: 2,
     }).format(aNumber);
-  }
-
-  function volumeCreditsFor(perf) {
-    let volumeCredits = 0;
-    volumeCredits += Math.max(perf.audience - 30, 0);
-
-    if ("comedy" === playFor(perf).type)
-      volumeCredits += Math.floor(perf.audience / 5);
-
-    return volumeCredits;
   }
 
   function amountFor(aPerformance) {
@@ -85,9 +61,34 @@ function statement(invoice, plays) {
     return result;
   }
 
-  function playFor(aPerformance) {
-    return plays[aPerformance.playID];
+  function totalAmount() {
+    let result = 0;
+    for (let perf of invoice.performances) {
+      result += amountFor(perf);
+    }
+    return result;
   }
+
+  function totalVolumeCredits() {
+    let result = 0;
+
+    for (let perf of invoice.performances) {
+      result += volumeCreditsFor(perf);
+    }
+
+    return result;
+  }
+
+  function volumeCreditsFor(perf) {
+    let volumeCredits = 0;
+    volumeCredits += Math.max(perf.audience - 30, 0);
+
+    if ("comedy" === playFor(perf).type)
+      volumeCredits += Math.floor(perf.audience / 5);
+
+    return volumeCredits;
+  }
+
   return result;
 }
 
