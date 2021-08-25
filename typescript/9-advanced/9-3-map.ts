@@ -41,7 +41,7 @@ const video: ReadOnly<Video> = {
 //   readonly description: string;
 // }
 
-type Nullable<T> = { [P in keyof T]: T[p] | null };
+type Nullable<T> = { [P in keyof T]: T[P] | null };
 const obj2: Nullable<Video> = {
   title: null,
   author: null,

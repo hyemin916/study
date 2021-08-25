@@ -1,5 +1,5 @@
 {
-  const obj = {
+const obj = {
   name: 'hyemin',
 };
 obj.name;
