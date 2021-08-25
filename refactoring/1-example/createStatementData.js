@@ -39,8 +39,18 @@ class PerformanceCaculator {
   }
 }
 
+class TragedyCaculator extends PerformanceCaculator {}
+class ComedyCaculator extends PerformanceCaculator {}
+
 function createPerformanceCaculator(aPerformance, aPlay) {
-  return new PerformanceCaculator(aPerformance, aPlay);
+  switch (aPlay.type) {
+    case "tragedy":
+      return new TragedyCaculator(aPerformance, aPlay);
+    case "comedy":
+      return new ComedyCaculator(aPerformance, aPlay);
+    default:
+      throw new Error(`알 수 없는 장르: ${aPlay.type}`);
+  }
 }
 
 export default function createStatementData(invoice, plays) {
