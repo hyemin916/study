@@ -24,7 +24,7 @@ function statement(invoice, plays) {
   }).format;
 
   for (let perf of invoice.performances) {
-    const play = plays[perf.playID];
+    const play = playFor(perf);
     let thisAmount = amountFor(perf, play);
 
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -36,6 +36,7 @@ function statement(invoice, plays) {
     }석)\n`;
     totalAmount += thisAmount;
   }
+
   result += `총액: ${format(totalAmount / 100)}\n`;
   result += `적립 포인트: ${volumeCredits}점\n`;
 
@@ -61,6 +62,10 @@ function statement(invoice, plays) {
     }
 
     return result;
+  }
+
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
   }
   return result;
 }
