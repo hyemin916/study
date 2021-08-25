@@ -22,17 +22,15 @@ function statement(invoice, plays) {
     }석)\n`;
   }
 
-  let totalAmount = appleSauce();
-
-  result += `총액: ${usd(totalAmount / 100)}\n`;
+  result += `총액: ${usd(totalAmount() / 100)}\n`;
   result += `적립 포인트: ${totalVolumeCredits()}점\n`;
 
-  function appleSauce() {
-    let totalAmount = 0;
+  function totalAmount() {
+    let result = 0;
     for (let perf of invoice.performances) {
-      totalAmount += amountFor(perf);
+      result += amountFor(perf);
     }
-    return totalAmount;
+    return result;
   }
 
   function totalVolumeCredits() {
