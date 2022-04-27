@@ -51,8 +51,13 @@ let nextUnitOfWork = null;
 
 function workLoop(deadline) {
   let shouldYield = false;
-  
-  while () {}
+
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
+  }
+
+  requestIdleCallback(workLoop);
 }
 
 const Didact = {
