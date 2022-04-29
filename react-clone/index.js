@@ -36,7 +36,8 @@ function createDOM(fiber) {
       ? document.createTextNode('')
       : document.createElement(element.type);
 
-  const isProperty = (key) => key !== 'children';
+  const isEvnet = (key) => key.startWiths('on');
+  const isProperty = (key) => key !== 'children' && !isEvnet(key);
   Object.keys(element.props)
     .filter(isProperty)
     .forEach((name) => {
@@ -48,7 +49,50 @@ function createDOM(fiber) {
   return dom;
 }
 
-function commitRoot() {}
+function updateDom(dom, prevProps, nextProps) {
+  Object.keys(prevProps)
+    .filter(isEvnet)
+    .filter((key) => !(key in nextProps) || isNew(prevProps, nextProps)(key))
+    .forEach((name) => {
+      const evenType = name.toLowerCase().substring(2);
+      dom.removeEventListener(evenType, prevProps[name]);
+    });
+
+  Object.keys(nextProps)
+    .filter(isEvnet)
+    .filter(isNew(prevProps, nextProps))
+    .forEach((name) => {
+      const evenType = name.toLowerCase().substring(2);
+      dom.addEventListener(evenType, nextProps[name]);
+    });
+}
+
+function commitRoot() {
+  deletions.forEach(commitWork);
+  commitWork(wipRoot.child);
+  currentRoot = wipRoot;
+  wipRoot = null;
+}
+
+function commitWork(fiber) {
+  if (!fiber) {
+    return;
+  }
+
+  const domParent = fiber.parent.dom;
+
+  if (fiber.effectTag === 'PLACEMENT' && fiber.dom !== null) {
+    domParent.appendChild(fiber.dom);
+  } else if (fiber.effectTag === 'UPDATE' && fiber.dom !== null) {
+    updateDom(fiber.dom, fiber.alternate.props, fiber.props);
+  } else if (fiber.effectTag === 'DELETION') {
+    domParent.removeChild(fiber.dom);
+  }
+
+  domParent.appendChild(fiber.dom);
+  commitWork(fiber.child);
+  commitWork(fiber.sibling);
+}
 
 function render(element, container) {
   wipRoot = {
@@ -56,12 +100,16 @@ function render(element, container) {
     props: {
       children: [element],
     },
+    alternate: currentRoot,
   };
+  deletions = [];
   nextUnitOfWork = wipRoot;
 }
 
 let nextUnitOfWork = null;
+let currentRoot = null;
 let wipRoot = null;
+let deletions = null;
 
 function workLoop(deadline) {
   let shouldYield = false;
@@ -83,32 +131,11 @@ function performUnitOfWork(fiber) {
     fiber.dom = createDOM(fiber);
   }
 
+  const elements = fiber.props.children;
+  reconcileChildren(fiber, elements);
+
   if (fiber.parent) {
     fiber.parent.dom.appendChild(fiber.dom);
-  }
-
-  const elements = fiber.props.children;
-  let index = 0;
-  let prevSibling = null;
-
-  while (index < elements.length) {
-    const element = elements[index];
-
-    const newFiber = {
-      type: element.type,
-      props: element.props,
-      parent: fiber,
-      dom: null,
-    };
-
-    if (index === 0) {
-      fiber.children = newFiber;
-    } else {
-      prevSibling.sibling = newFiber;
-    }
-
-    prevSibling = newFiber;
-    index++;
   }
 
   if (fiber.children) {
@@ -122,6 +149,55 @@ function performUnitOfWork(fiber) {
       return nextFiber.sibling;
     }
     nextFiber = nextFiber.parent;
+  }
+}
+
+function reconcileChildren(wipFiber, elements) {
+  let index = 0;
+  let oldFiber = wipFiber.alternate && wipFiber.alternate.child;
+  let prevSibling = null;
+
+  while (index < elements.length || oldFiber != null) {
+    const element = elements[index];
+    let newFiber = null;
+
+    const sameType = element?.type === oldFiber?.type;
+
+    if (sameType) {
+      newFiber = {
+        type: oldFiber.type,
+        props: element.props,
+        dom: oldFiber.dom,
+        parent: wipFiber,
+        alternate: oldFiber,
+        effectTag: 'UPDATE',
+      };
+    }
+
+    if (element && !sameType) {
+      newFiber = {
+        type: element.type,
+        props: element.props,
+        dom: null,
+        parent: wipFiber,
+        alternate: null,
+        effectTag: 'PLACEMENT',
+      };
+    }
+
+    if (oleType && !sameType) {
+      oldFiber.effectTag = 'DELETION';
+      deletions.push(oldFiber);
+    }
+
+    if (index === 0) {
+      fiber.children = newFiber;
+    } else {
+      prevSibling.sibling = newFiber;
+    }
+
+    prevSibling = newFiber;
+    index++;
   }
 }
 
