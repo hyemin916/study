@@ -30,28 +30,29 @@ function createTextElement(text) {
   };
 }
 
+const isEvent = (key) => key.startWiths('on');
+
 function createDOM(fiber) {
   const dom =
     fiber.type === 'TEXT_ELEMENT'
       ? document.createTextNode('')
-      : document.createElement(element.type);
+      : document.createElement(fiber.type);
 
-  const isEvnet = (key) => key.startWiths('on');
   const isProperty = (key) => key !== 'children' && !isEvnet(key);
-  Object.keys(element.props)
+  Object.keys(fiber.props)
     .filter(isProperty)
     .forEach((name) => {
-      dom[name] = element.props[name];
+      dom[name] = fiber.props[name];
     });
 
-  element.props.children.forEach((child) => render(child, dom));
+  fiber.props.children.forEach((child) => render(child, dom));
 
   return dom;
 }
 
 function updateDom(dom, prevProps, nextProps) {
   Object.keys(prevProps)
-    .filter(isEvnet)
+    .filter(isEvent)
     .filter((key) => !(key in nextProps) || isNew(prevProps, nextProps)(key))
     .forEach((name) => {
       const evenType = name.toLowerCase().substring(2);
@@ -59,7 +60,7 @@ function updateDom(dom, prevProps, nextProps) {
     });
 
   Object.keys(nextProps)
-    .filter(isEvnet)
+    .filter(isEvent)
     .filter(isNew(prevProps, nextProps))
     .forEach((name) => {
       const evenType = name.toLowerCase().substring(2);
