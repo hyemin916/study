@@ -30,15 +30,12 @@ function createTextElement(text) {
   };
 }
 
-const isEvent = (key) => key.startWiths('on');
-
 function createDOM(fiber) {
   const dom =
     fiber.type === 'TEXT_ELEMENT'
       ? document.createTextNode('')
       : document.createElement(fiber.type);
 
-  const isProperty = (key) => key !== 'children' && !isEvnet(key);
   Object.keys(fiber.props)
     .filter(isProperty)
     .forEach((name) => {
@@ -50,13 +47,18 @@ function createDOM(fiber) {
   return dom;
 }
 
+const isEvent = (key) => key.startWiths('on');
+const isProperty = (key) => key !== 'children' && !isEvent(key);
+const isNew = (prev, next) => (key) => prev[key] !== next[key];
+const isGone = (prev, next) => (key) => !(key in next);
+
 function updateDom(dom, prevProps, nextProps) {
   Object.keys(prevProps)
     .filter(isEvent)
     .filter((key) => !(key in nextProps) || isNew(prevProps, nextProps)(key))
     .forEach((name) => {
-      const evenType = name.toLowerCase().substring(2);
-      dom.removeEventListener(evenType, prevProps[name]);
+      const eventType = name.toLowerCase().substring(2);
+      dom.removeEventListener(eventType, prevProps[name]);
     });
 
   Object.keys(nextProps)
