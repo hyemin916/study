@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Payment = ({ amount }: { amount: number }) => {
+const usePaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<LocalPaymentMethod[]>(
     []
   );
@@ -26,6 +26,14 @@ const Payment = ({ amount }: { amount: number }) => {
 
     fetchPaymentMethods();
   }, []);
+
+  return {
+    paymentMethods,
+  };
+};
+
+const Payment = ({ amount }: { amount: number }) => {
+  const { paymentMethods } = usePaymentMethods();
 
   return (
     <div>
