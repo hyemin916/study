@@ -1,4 +1,20 @@
 import React, { useEffect, useState } from "react";
+import PaymentMethod from "./PaymentMethod";
+
+const payInCash = new PaymentMethod({ name: "cash" });
+
+const convertPaymentMethods = (methods: RemotePaymentMethod[]) => {
+  if (methods.length === 0) {
+    return [];
+  }
+
+  const extended: PaymentMethod[] = methods.map(
+    (method) => new PaymentMethod(method)
+  );
+  extended.push(payInCash);
+
+  return extended;
+};
 
 const usePaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<LocalPaymentMethod[]>(
@@ -12,16 +28,8 @@ const usePaymentMethods = () => {
       const response = await fetch(url);
       const methods: RemotePaymentMethod[] = await response.json();
 
-      if (methods.length > 0) {
-        const extended: LocalPaymentMethod[] = methods.map((method) => ({
-          provider: method.name,
-          label: `Pay with ${method.name}`,
-        }));
-        extended.push({ provider: "cash", label: "Pay in cashs" });
-        setPaymentMethods(extended);
-      } else {
-        setPaymentMethods([]);
-      }
+      const extended = convertPaymentMethods(methods);
+      setPaymentMethods(extended);
     };
 
     fetchPaymentMethods();
@@ -58,7 +66,7 @@ const PaymentMethods = ({
           type="radio"
           name="payment"
           value={method.provider}
-          defaultChecked={method.provider === "cash"}
+          defaultChecked={method.isDefaultMethod}
         />
         <span>{method.label}</span>
       </label>
