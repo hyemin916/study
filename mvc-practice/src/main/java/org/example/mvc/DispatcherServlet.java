@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/")
 public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
-    private RequestMappingHandlerMapping rmhm;
+    private RequestMappingHandlerMapping rmhm = new RequestMappingHandlerMapping();
 
     @Override
     public void init() throws ServletException {
