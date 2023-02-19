@@ -1,7 +1,4 @@
-package org.example.controller;
-
-import org.example.annotation.RequestMapping;
-import org.example.annotation.RequestMethod;
+package org.example.mvc.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

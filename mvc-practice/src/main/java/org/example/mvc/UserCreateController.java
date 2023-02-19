@@ -1,6 +1,6 @@
 package org.example.mvc;
 
-import org.example.controller.Controller;
+import org.example.mvc.controller.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
