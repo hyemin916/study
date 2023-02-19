@@ -14,6 +14,7 @@ public class RequestMappingHandlerMapping {
     void init() {
         mappings.put("/", new HomeController());
         mappings.put("/users", new UserListController());
+        mappings.put("/users", new UserCreateController());
     }
 
     public Controller findHandler(String uriPath) {
