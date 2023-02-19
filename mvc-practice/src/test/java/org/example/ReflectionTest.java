@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ReflectionTest {
     private static final Logger logger = LoggerFactory.getLogger(Reference.class);
     @Test
@@ -52,6 +54,10 @@ public class ReflectionTest {
         logger.debug("clazz: [{}]", clazz);
         logger.debug("aClass: [{}]", aClass);
         logger.debug("aClass2: [{}]", aClass2);
+
+        assertThat(clazz).isEqualTo(aClass);
+        assertThat(aClass).isEqualTo(aClass2);
+        assertThat(clazz).isEqualTo(aClass2);
     }
 
     private Set<Class<?>> getTypesAnnotatedWith(List<Class<? extends Annotation>> annotations) {
