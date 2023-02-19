@@ -25,8 +25,10 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         log.info("[DispatcherServlet] service started");
         try {
-        final Controller handler = rmhm.findHandler(req.getRequestURI());
+            final Controller handler = rmhm.findHandler(req.getRequestURI());
             final String viewName = handler.handleRequest(req, resp);
+
+            req.getRequestDispatcher(viewName).forward(req, resp);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
