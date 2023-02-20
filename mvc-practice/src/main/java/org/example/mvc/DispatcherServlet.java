@@ -24,12 +24,14 @@ public class DispatcherServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(DispatcherServlet.class);
     private RequestMappingHandlerMapping rmhm = new RequestMappingHandlerMapping();
     private List<ViewResolver> viewResolvers;
+    private List<HandlerAdapter> handlerAdapters;
 
     @Override
     public void init() throws ServletException {
         rmhm.init();
 
         viewResolvers = Collections.singletonList(new JspViewResolver());
+        handlerAdapters = List.of(new SimpleControllerHandlerAdapter());
     }
 
     @Override
