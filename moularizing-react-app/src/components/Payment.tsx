@@ -2,6 +2,7 @@ import React from "react";
 import usePaymentMethods from "../hooks/usePaymentMethods";
 import { PaymentMethods } from "./PaymentMethods";
 import useRoundUp from "../hooks/useRoundUpt";
+import { DonationCheckbox } from "./DonationCheckbox";
 
 const formatCheckboxLabel = (agreeToDonate: boolean, tip: number) =>
   agreeToDonate
@@ -17,16 +18,11 @@ const Payment = ({ amount }: { amount: number }) => {
     <div>
       <h3>Payment</h3>
       <PaymentMethods paymentMethods={paymentMethods} />
-      <div>
-        <label>
-          <input
-            type="checkbox"
-            onChange={updateAgreeToDonate}
-            checked={agreeToDonate}
-          />
-          <p>{formatCheckboxLabel(agreeToDonate, tip)}</p>
-        </label>
-      </div>
+      <DonationCheckbox
+        onChange={updateAgreeToDonate}
+        checked={agreeToDonate}
+        content={formatCheckboxLabel(agreeToDonate, tip)}
+      />
       <button>${total}</button>
     </div>
   );
