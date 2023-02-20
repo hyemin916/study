@@ -42,7 +42,7 @@ public class DispatcherServlet extends HttpServlet {
 
             for (ViewResolver viewResolver : viewResolvers) {
                 final View view = viewResolver.resolveViews(viewName);
-                view.render(new HashMap<>, req, resp);
+                view.render(new HashMap<>(), req, resp);
             }
 
         } catch (Exception e) {

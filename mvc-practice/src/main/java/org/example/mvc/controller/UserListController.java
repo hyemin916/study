@@ -9,6 +9,6 @@ public class UserListController implements Controller{
     @Override
     public String handleRequest(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
         req.setAttribute("users", List.of());
-        return "/user/list.jsp";
+        return "/user/list";
     }
 }

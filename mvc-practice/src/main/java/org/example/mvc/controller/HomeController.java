@@ -7,6 +7,6 @@ public class HomeController  implements Controller {
 
     @Override
     public String handleRequest(final HttpServletRequest req, final HttpServletResponse res) throws Exception {
-        return "home.jsp";
+        return "home";
     }
 }
