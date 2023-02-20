@@ -1,4 +1,4 @@
-import PaymentMethod from "./PaymentMethod";
+import PaymentMethod from "../models/PaymentMethod";
 import { useEffect, useState } from "react";
 
 const payInCash = new PaymentMethod({ name: "cash" });
