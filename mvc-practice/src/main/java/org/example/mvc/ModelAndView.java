@@ -14,4 +14,8 @@ public class ModelAndView {
     public Map<String, Object> getModel() {
         return Collections.unmodifiableMap(model);
     }
+
+    public String getViewName() {
+        return this.view instanceof String ? (String) this.view : null;
+    }
 }

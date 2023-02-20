@@ -39,8 +39,6 @@ public class DispatcherServlet extends HttpServlet {
         log.info("[DispatcherServlet] service started");
         try {
             final Controller handler = rmhm.findHandler(new HandlerKey(RequestMethod.valueOf(req.getMethod()), req.getRequestURI()));
-            // redirect & forward
-            final String viewName = handler.handleRequest(req, resp);
 
             final HandlerAdapter handlerAdapter = handlerAdapters.stream()
                     .filter(adapter -> adapter.supports(handler))
@@ -49,7 +47,7 @@ public class DispatcherServlet extends HttpServlet {
             final ModelAndView modelAndView = handlerAdapter.handler(req, resp, handler);
 
             for (ViewResolver viewResolver : viewResolvers) {
-                final View view = viewResolver.resolveViews(viewName);
+                final View view = viewResolver.resolveViews(modelAndView.getViewName());
                 view.render(modelAndView.getModel(), req, resp);
             }
 
