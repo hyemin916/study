@@ -50,7 +50,6 @@ public class DispatcherServlet extends HttpServlet {
                 final View view = viewResolver.resolveViews(modelAndView.getViewName());
                 view.render(modelAndView.getModel(), req, resp);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
