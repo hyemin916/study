@@ -42,9 +42,15 @@ public class DispatcherServlet extends HttpServlet {
             // redirect & forward
             final String viewName = handler.handleRequest(req, resp);
 
+            final HandlerAdapter handlerAdapter = handlerAdapters.stream()
+                    .filter(adapter -> adapter.supports(handler))
+                    .findFirst()
+                    .orElseThrow(() -> new ServletException("No adapter form handler" + handler));
+            final ModelAndView modelAndView = handlerAdapter.handler(req, resp, handler);
+
             for (ViewResolver viewResolver : viewResolvers) {
                 final View view = viewResolver.resolveViews(viewName);
-                view.render(new HashMap<>(), req, resp);
+                view.render(modelAndView.getModel(), req, resp);
             }
 
         } catch (Exception e) {
