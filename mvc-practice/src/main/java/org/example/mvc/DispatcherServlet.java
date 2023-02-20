@@ -1,6 +1,6 @@
 package org.example.mvc;
 
-import org.example.annotation.RequestMethod;
+import org.example.mvc.annotation.RequestMethod;
 import org.example.mvc.controller.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +27,8 @@ public class DispatcherServlet extends HttpServlet {
         log.info("[DispatcherServlet] service started");
         try {
             final Controller handler = rmhm.findHandler(new HandlerKey(RequestMethod.valueOf(req.getMethod()), req.getRequestURI()));
+            // redirect & forward
             final String viewName = handler.handleRequest(req, resp);
-
-            req.getRequestDispatcher(viewName).forward(req, resp);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,6 @@
 package org.example.mvc;
 
-import org.example.annotation.RequestMethod;
+import org.example.mvc.annotation.RequestMethod;
 import org.example.mvc.controller.Controller;
 import org.example.mvc.controller.ForwardController;
 import org.example.mvc.controller.HomeController;

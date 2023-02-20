@@ -1,6 +1,6 @@
 package org.example.mvc;
 
-import org.example.annotation.RequestMethod;
+import org.example.mvc.annotation.RequestMethod;
 
 import java.util.Objects;
 

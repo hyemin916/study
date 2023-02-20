@@ -1,6 +1,6 @@
 package org.example.mvc;
 
-import org.example.model.User;
+import org.example.mvc.model.User;
 import org.example.mvc.controller.Controller;
 import org.example.repository.UserRepository;
 
