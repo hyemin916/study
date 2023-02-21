@@ -16,6 +16,6 @@ export class CountryPayment {
   };
 
   getTip(amount: number): number {
-    return calculateTipForm(this.getRoundUpAmount(amount));
+    return calculateTipFor(this.getRoundUpAmount(amount));
   }
 }

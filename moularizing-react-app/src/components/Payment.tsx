@@ -1,7 +1,7 @@
 import React from "react";
 import usePaymentMethods from "../hooks/usePaymentMethods";
 import { PaymentMethods } from "./PaymentMethods";
-import useRoundUp from "../hooks/useRoundUpt";
+import useRoundUp from "../hooks/useRoundUp";
 import { DonationCheckbox } from "./DonationCheckbox";
 
 const formatCheckboxLabel = (agreeToDonate: boolean, tip: number) =>

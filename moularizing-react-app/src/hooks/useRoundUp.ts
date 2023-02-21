@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { PaymentStrategy } from "../models/PaymentStrategy";
 
-const useRoundUp = (amount: number) => {
+const useRoundUp = (amount: number, strategy: PaymentStrategy) => {
   const [agreeToDonate, setAgreeToDonate] = useState<boolean>(false);
 
-  const total = agreeToDonate ? Math.floor(amount + 1) : amount;
-  const tip = parseFloat((Math.floor(amount + 1) - amount).toPrecision(10));
+  const total = agreeToDonate ? strategy.getRoundUpAmount(amount) : amount;
+  const tip = strategy.getTip(amount);
 
   const updateAgreeToDonate = () =>
     setAgreeToDonate((agreeToDonate) => !agreeToDonate);
